@@ -13,8 +13,8 @@ app.all("/*", (request, response) => {
   });
 
 app.use((err, request, response, next) => {
-  if (err.status === 400) {
-    response.status(400).send({ msg: "bad request" });
+  if (err.status === '22P02') {
+    response.status(400).send({ msg: "Invalid Id" });
   }
   next(err);
 });

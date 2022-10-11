@@ -41,7 +41,7 @@ describe.only("GET: /api/categories", () => {
       .get("/api/category")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toEqual("not found");
+        expect(body.msg).toBe("not found");
       });
   });
 });
