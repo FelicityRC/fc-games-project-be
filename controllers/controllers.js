@@ -1,18 +1,14 @@
-const { fetchCategories } = require("../models/models")
+const { fetchCategories } = require("../models/models");
 
 function getCategories(request, response, next) {
-    request.query;
-    fetchCategories()
-    .then((games) => {
-        response.status(200).send({ body: games })
+  request.query;
+  fetchCategories()
+    .then((categories) => {
+      response.status(200).send({ categories });
     })
     .catch((err) => {
-        next(err);
-    })
+      next(err);
+    });
 }
-
-
-
-
 
 module.exports = { getCategories };

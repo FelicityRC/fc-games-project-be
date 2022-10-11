@@ -21,11 +21,11 @@ describe.only("GET: /api/categories", () => {
     return request(app)
       .get("/api/categories")
       .expect(200)
-      .then((response) => {
-        const {
-          body: { body },
-        } = response;
-        body.forEach((property) => {
+      .then(({ body }) => {
+        console.log(body)
+       expect(Array.isArray(body["categories"])).toEqual(true);
+        expect(body.categories.length).toEqual(4);
+        body.categories.forEach((property) => {
           expect(property).toEqual(
             expect.objectContaining({
               slug: expect.any(String),
@@ -36,7 +36,7 @@ describe.only("GET: /api/categories", () => {
       });
   });
 
-  test("404: bad request error message when given invalid file path", () => {
+  test("404: bad request error message endpoint doesn't exist", () => {
     return request(app)
       .get("/api/category")
       .expect(404)
