@@ -2,6 +2,7 @@ const express = require("express");
 
 const { getCategories } = require("./controllers/categories.controllers");
 const { getReviewById } = require("./controllers/reviews.controllers");
+const { getUsers } = require("./controllers/users.controllers");
 
 const app = express();
 
@@ -9,7 +10,11 @@ app.use(express.json());
 
 app.get("/api/categories", getCategories);
 app.get("/api/reviews/:review_id", getReviewById);
+app.get("/api/users", getUsers);
 
+app.all("/*", (request, response) => {
+  response.status(404).send({ msg: "not found" });
+});
 
 app.use((err, request, response, next) => {
   if (err.code === "22P02") {
@@ -17,9 +22,6 @@ app.use((err, request, response, next) => {
   } else {
     next(err);
   }
-});
-app.all("/*", (request, response) => {
-  response.status(404).send({ msg: "not found" });
 });
 
 app.use((err, request, response, next) => {
