@@ -1,5 +1,5 @@
 node_modules
 .env.*
 
-test.sql
-test.txt
+.test.sql
+.test.txt
