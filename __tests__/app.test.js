@@ -8,7 +8,6 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
-const { expect } = require("@jest/globals");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -85,3 +84,32 @@ describe.only("GET: /api/reviews/:review_id", () => {
   });
 });
 
+describe.only("GET: /api/users", () => {
+  test("200: responds with an object of user data", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body["users"])).toEqual(true);
+        expect(body.users.length).toEqual(4);
+        body.users.forEach((property) => {
+          expect(property).toEqual(
+            expect.objectContaining({
+              name: expect.any(String),
+              username: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+
+  test("404 returns an error message when passed an end point that doesn't exist", () => {
+    return request(app)
+      .get("/api/myUsers")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("not found");
+      });
+  });
+});
