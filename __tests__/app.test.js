@@ -15,7 +15,7 @@ afterAll(() => {
   return db.end();
 });
 
-describe.only("GET: /api/categories", () => {
+describe("GET: /api/categories", () => {
   test("200: responds with an object of category data", () => {
     return request(app)
       .get("/api/categories")
@@ -44,7 +44,7 @@ describe.only("GET: /api/categories", () => {
   });
 });
 
-describe.only("GET: /api/reviews/:review_id", () => {
+describe("GET: /api/reviews/:review_id", () => {
   test("200: responds with review object", () => {
     return request(app)
       .get("/api/reviews/1")
@@ -84,7 +84,7 @@ describe.only("GET: /api/reviews/:review_id", () => {
   });
 });
 
-describe.only("GET: /api/users", () => {
+describe("GET: /api/users", () => {
   test("200: responds with an object of user data", () => {
     return request(app)
       .get("/api/users")
