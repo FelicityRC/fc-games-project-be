@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { getCategories } = require("./controllers/categories.controllers");
-const { getReviewById } = require("./controllers/reviews.controllers");
+const { getReviewById, updateVotes } = require("./controllers/reviews.controllers");
 const { getUsers } = require("./controllers/users.controllers");
 
 const app = express();
@@ -11,6 +11,7 @@ app.use(express.json());
 app.get("/api/categories", getCategories);
 app.get("/api/reviews/:review_id", getReviewById);
 app.get("/api/users", getUsers);
+app.patch("/api/reviews/:review_id", updateVotes);
 
 app.all("/*", (request, response) => {
   response.status(404).send({ msg: "not found" });
@@ -25,7 +26,7 @@ app.use((err, request, response, next) => {
 });
 
 app.use((err, request, response, next) => {
-  if (err.status) {
+  if (err.status && err.msg) {
     response.status(err.status).send({ msg: err.msg });
   } else {
     next(err);
