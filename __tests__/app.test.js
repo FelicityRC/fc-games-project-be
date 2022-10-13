@@ -8,6 +8,7 @@ const {
   reviewData,
   userData,
 } = require("../db/data/test-data");
+const { expect } = require("@jest/globals");
 
 beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
 
@@ -51,18 +52,20 @@ describe("Northcoders Backend Games Project", () => {
         .get("/api/reviews/1")
         .expect(200)
         .then(({ body }) => {
-          expect(body.review).toEqual({
-            review_id: 1,
-            title: "Agricola",
-            review_body: "Farmyard fun!",
-            designer: "Uwe Rosenberg",
-            review_img_url:
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-            votes: 1,
-            category: "euro game",
-            owner: "mallionaire",
-            created_at: expect.any(String),
-          });
+          expect(body.review).toEqual(
+            expect.objectContaining({
+              review_id: 1,
+              title: "Agricola",
+              review_body: "Farmyard fun!",
+              designer: "Uwe Rosenberg",
+              review_img_url:
+                "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+              votes: 1,
+              category: "euro game",
+              owner: "mallionaire",
+              created_at: expect.any(String),
+            })
+          );
         });
     });
 
@@ -86,7 +89,7 @@ describe("Northcoders Backend Games Project", () => {
   });
 
   describe("GET: /api/users", () => {
-    test("200: responds with an object of user data", () => {
+    test("200: responds with an array of objects containing user data", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
@@ -170,10 +173,26 @@ describe("Northcoders Backend Games Project", () => {
     test("400: returns an error message when no value has been sent over in the inc_votes object", () => {
       return request(app)
         .patch("/api/reviews/2")
-        .send({inc_votes: NaN})
+        .send({ inc_votes: NaN })
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("no votes to add");
+        });
+    });
+  });
+
+  describe("GET: /api/reviews/:review_id (comment_count)", () => {
+    test("200: responds with total count of comments with corresponding review id", () => {
+      return request(app)
+        .get("/api/reviews/3")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.review.review_id).toEqual(3);
+          expect(body.review.comment_count).toEqual(3);
+          expect.objectContaining({
+            review_id: 3,
+            comment_count: 3,
+          });
         });
     });
   });
