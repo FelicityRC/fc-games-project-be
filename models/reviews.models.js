@@ -13,7 +13,7 @@ function fetchReviewById(review_id) {
 
 function getNewVotes(review_id, inc_votes) {
   if (!inc_votes) {
-    return Promise.reject({ status: 404, msg: "not found" });
+    return Promise.reject({ status: 400, msg: "no votes to add" });
   } else {
     return db
       .query(

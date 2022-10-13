@@ -157,23 +157,23 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("404: returns an error message when sending an empty object", () => {
+    test("400: returns an error message when sending an empty object", () => {
       return request(app)
         .patch("/api/reviews/2")
         .send({})
-        .expect(404)
+        .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("not found");
+          expect(body.msg).toBe("no votes to add");
         });
     });
 
-    test("404: returns an error message when no value has been sent over in the inc_votes object", () => {
+    test("400: returns an error message when no value has been sent over in the inc_votes object", () => {
       return request(app)
         .patch("/api/reviews/2")
         .send({inc_votes: NaN})
-        .expect(404)
+        .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("not found");
+          expect(body.msg).toBe("no votes to add");
         });
     });
   });
