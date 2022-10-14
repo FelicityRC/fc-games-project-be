@@ -100,8 +100,4 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
   });
 }
 
-// if no category specified then doesn't add queried category to the query.
-// if (category===undefined)
-//   return Promise.reject({status: 404, msg: "category not found"})
-
 module.exports = { fetchReviews, fetchReviewById, fetchNewVotes };

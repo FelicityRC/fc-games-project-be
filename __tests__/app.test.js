@@ -16,7 +16,7 @@ afterAll(() => {
   return db.end();
 });
 
-describe("Northcoders Backend Games Project", () => {
+describe.only("Northcoders Backend Games Project", () => {
   describe("GET: /api/categories", () => {
     test("200: responds with an object of category data", () => {
       return request(app)
@@ -247,6 +247,27 @@ describe("Northcoders Backend Games Project", () => {
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("category not found");
+        });
+    });
+  });
+
+  describe("GET: /api/reviews/:review_id/comments", () => {
+    test("200: return array of comments for the given review_id with each comment containing the expected properties and listed by most recent comments first", () => {
+      return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.reviews).toBeSortedBy("created_at", { descending: true });
+          expect(body.review).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+              review_id: expect.any(Number),
+             })
+          );
         });
     });
   });

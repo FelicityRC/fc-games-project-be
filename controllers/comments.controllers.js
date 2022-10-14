@@ -1,8 +1,11 @@
-const { fetchComments } = require("../models/comments.models");
+const { fetchCommentsByReviewId } = require("../models/comments.models");
+//const { fetchReviewById } = require("../models/reviews.models")
 
-function getComments(request, response, next) {
-  request.query;
-  fetchComments()
+
+function getCommentsByReviewId(request, response, next) {
+  const { id } = request.params;
+  fetchCommentsByReviewId(id)
+  console.log(id, "id")
     .then((comments) => {
       response.status(200).send({ comments });
     })
@@ -11,4 +14,4 @@ function getComments(request, response, next) {
     });
 }
 
-module.exports = { getComments };
+module.exports = { getCommentsByReviewId };
