@@ -254,20 +254,42 @@ describe.only("Northcoders Backend Games Project", () => {
   describe("GET: /api/reviews/:review_id/comments", () => {
     test("200: return array of comments for the given review_id with each comment containing the expected properties and listed by most recent comments first", () => {
       return request(app)
-        .get("/api/reviews/2/comments")
+        .get("/api/reviews/3/comments")
         .expect(200)
         .then(({ body }) => {
-          expect(body.reviews).toBeSortedBy("created_at", { descending: true });
-          expect(body.review).toEqual(
-            expect.objectContaining({
-              comment_id: expect.any(Number),
-              votes: expect.any(Number),
-              created_at: expect.any(String),
-              author: expect.any(String),
-              body: expect.any(String),
-              review_id: expect.any(Number),
-             })
-          );
+          expect(body.comments).toBeSortedBy("created_at", {
+            descending: true,
+          });
+          body.comments.forEach((comment) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                votes: expect.any(Number),
+                created_at: expect.any(String),
+                author: expect.any(String),
+                body: expect.any(String),
+                review_id: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    test("400: returns an error message when passed an invalid type of review id", () => {
+      return request(app)
+        .get("/api/reviews/hello/comments")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("invalid id");
+        });
+    });
+
+    test("404: returns an error message when passed a review id that doesn't exist in the database", () => {
+      return request(app)
+        .get("/api/reviews/80000/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
         });
     });
   });
