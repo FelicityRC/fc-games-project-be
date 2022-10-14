@@ -1,4 +1,8 @@
-const { fetchReviewById, getNewVotes } = require("../models/reviews.models");
+const {
+  fetchReviews,
+  fetchReviewById,
+  fetchNewVotes,
+} = require("../models/reviews.models");
 
 function getReviewById(request, response, next) {
   const { review_id } = request.params;
@@ -14,12 +18,21 @@ function getReviewById(request, response, next) {
 
 function updateVotes(request, response, next) {
   const { inc_votes } = request.body;
-  const { review_id } = request.params; 
-  getNewVotes(review_id, inc_votes)
-  .then((vote) => {
-    response.status(200).send(vote);
-  })
-  .catch(next);
+  const { review_id } = request.params;
+  fetchNewVotes(review_id, inc_votes)
+    .then((vote) => {
+      response.status(200).send(vote);
+    })
+    .catch(next);
 }
 
-module.exports = { getReviewById, updateVotes };
+function getReviews(request, response, next) {
+  const { sort_by, order_by, category } = request.query;
+  fetchReviews(sort_by, order_by, category)
+    .then((reviews) => {
+      response.status(200).send({reviews});
+    })
+    .catch(next);
+}
+
+module.exports = { getReviews, getReviewById, updateVotes };
