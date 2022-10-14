@@ -78,7 +78,7 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("404 returns an error message when passed a review id that doesn't exist", () => {
+    test("404: returns an error message when passed a review id that doesn't exist", () => {
       return request(app)
         .get("/api/reviews/8000")
         .expect(404)
@@ -108,7 +108,7 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("404 returns an error message when passed an end point that doesn't exist", () => {
+    test("404: returns an error message when passed an end point that doesn't exist", () => {
       return request(app)
         .get("/api/myUsers")
         .expect(404)
@@ -193,6 +193,60 @@ describe("Northcoders Backend Games Project", () => {
             review_id: 3,
             comment_count: 3,
           });
+        });
+    });
+  });
+
+  describe("GET: /api/reviews", () => {
+    test("200: returns array of reviews with expected properties including comment count for each review and sorted by date order descending", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.reviews)).toEqual(true);
+          expect(body.reviews.length).toEqual(13);
+          expect(body.reviews).toBeSortedBy("created_at", { descending: true });
+          body.reviews.forEach((review) => {
+            expect(review).toEqual(
+              expect.objectContaining({
+                review_id: expect.any(Number),
+                owner: expect.any(String),
+                title: expect.any(String),
+                category: expect.any(String),
+                review_img_url: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                designer: expect.any(String),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    test("200: returns reviews filtered by category specified when given category query", () => {
+      return request(app)
+        .get("/api/reviews?category=euro%20game")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.reviews)).toEqual(true);
+          expect(body.reviews.length).toEqual(1);
+          body.reviews.forEach((review) => {
+            expect(review).toEqual(
+              expect.objectContaining({
+                category: "euro game",
+              })
+            );
+          });
+        });
+    });
+
+    test("404: responds with not found msg when query entered that doesn't exist", () => {
+      return request(app)
+        .get("/api/reviews?category=biscuits")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("category not found");
         });
     });
   });
