@@ -60,6 +60,12 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
     "social deduction",
     "dexterity",
     "children's games",
+    "strategy",
+    "hidden-roles",
+    "push-your-luck",
+    "roll-and-write",
+    "deck-building",
+    "engine-building",
   ];
 
   let queryStr = `
@@ -69,13 +75,13 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
                   ON reviews.review_id = comments.review_id
 
                   `;
-if(category){
-  if (validCategories.includes(category)) {
-    queryStr += `WHERE category = '${category}' `;
-  } else {
-    return Promise.reject({ status: 404, msg: "category not found" });
+  if (category) {
+    if (validCategories.includes(category)) {
+      queryStr += `WHERE category = '${category}' `;
+    } else {
+      return Promise.reject({ status: 404, msg: "category not found" });
+    }
   }
-}
   if (
     validSortByQueries.includes(sort_by) &&
     validOrderQueries.includes(order_by)
@@ -85,7 +91,6 @@ if(category){
   } else {
     return Promise.reject({ status: 404, msg: "not found" });
   }
-
 
   return db.query(queryStr).then(({ rows }) => {
     if (rows.length === 0) {
