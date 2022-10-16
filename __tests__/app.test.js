@@ -16,7 +16,7 @@ afterAll(() => {
   return db.end();
 });
 
-describe.only("Northcoders Backend Games Project", () => {
+describe("Northcoders Backend Games Project", () => {
   describe("GET: /api/categories", () => {
     test("200: responds with an object of category data", () => {
       return request(app)
@@ -257,6 +257,7 @@ describe.only("Northcoders Backend Games Project", () => {
         .get("/api/reviews/3/comments")
         .expect(200)
         .then(({ body }) => {
+          expect(body.comments.length).toEqual(3);
           expect(body.comments).toBeSortedBy("created_at", {
             descending: true,
           });
