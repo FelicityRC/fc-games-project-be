@@ -2,15 +2,9 @@ const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const app = require("../app.js");
 const request = require("supertest");
-const {
-  categoryData,
-  commentData,
-  reviewData,
-  userData,
-} = require("../db/data/test-data");
-const { expect } = require("@jest/globals");
+const testData = require("../db/data/test-data");
 
-beforeEach(() => seed({ categoryData, commentData, reviewData, userData }));
+beforeEach(() => seed(testData));
 
 afterAll(() => {
   return db.end();
@@ -226,7 +220,7 @@ describe("Northcoders Backend Games Project", () => {
 
     test("200: returns reviews filtered by category specified when given category query", () => {
       return request(app)
-        .get("/api/reviews?category=euro%20game")
+        .get("/api/reviews?category=dexterity")
         .expect(200)
         .then(({ body }) => {
           expect(Array.isArray(body.reviews)).toEqual(true);
@@ -234,7 +228,7 @@ describe("Northcoders Backend Games Project", () => {
           body.reviews.forEach((review) => {
             expect(review).toEqual(
               expect.objectContaining({
-                category: "euro game",
+                category: "dexterity",
               })
             );
           });
@@ -291,6 +285,60 @@ describe("Northcoders Backend Games Project", () => {
         .expect(404)
         .then(({ body }) => {
           expect(body.msg).toBe("not found");
+        });
+    });
+  });
+
+  describe("POST: /api/reviews/:reviews_id/comments", () => {
+    test("201: responds with the posted comment", () => {
+      const newComment = {
+        username: "mallionaire",
+        body: "ce jeu est incroyable!",
+      };
+      return request(app)
+        .post("/api/reviews/1/comments")
+        .send(newComment)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.postedComment).toEqual(
+            expect.objectContaining({
+              review_id: expect.any(Number),
+              author: expect.any(String),
+              body: expect.any(String),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+            })
+          );
+        });
+    });
+
+    test("400: returns error msg if comment or username is missing", () => {
+      return request(app)
+        .post("/api/reviews/1/comments")
+        .send({ body: "this game is amazing!" })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("author name and/or comment is missing");
+        });
+    });
+
+    test("404: returns error msg if passed a review id that doesn't exist", () => {
+      return request(app)
+        .post("/api/reviews/1000000/comments")
+        .send({ username: "mallionaire", body: "ce jeu est incroyable!" })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("not found");
+        });
+    });
+
+    test("400: returns error msg if passed no username or comment info", () => {
+      return request(app)
+        .post("/api/reviews/1/comments")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("author name and/or comment is missing");
         });
     });
   });
