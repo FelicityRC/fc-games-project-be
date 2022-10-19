@@ -72,7 +72,7 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
                   SELECT reviews.*, COUNT(comments.review_id) ::INT AS comment_count 
                   FROM reviews
                   LEFT JOIN comments 
-                  ON reviews.review_id = comments.review_id
+                  ON comments.review_id=reviews.review_id
 
                   `;
   if (category) {

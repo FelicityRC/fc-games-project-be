@@ -1,9 +1,16 @@
 const express = require("express");
 
 const { getCategories } = require("./controllers/categories.controllers");
-const { getReviews, getReviewById, updateVotes } = require("./controllers/reviews.controllers");
+const {
+  getReviews,
+  getReviewById,
+  updateVotes,
+} = require("./controllers/reviews.controllers");
 const { getUsers } = require("./controllers/users.controllers");
-const { getCommentsByReviewId } = require("./controllers/comments.controllers");
+const {
+  getCommentsByReviewId,
+  postCommentOnReview,
+} = require("./controllers/comments.controllers");
 
 const app = express();
 
@@ -15,6 +22,7 @@ app.get("/api/users", getUsers);
 app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 app.patch("/api/reviews/:review_id", updateVotes);
+app.post("/api/reviews/:review_id/comments", postCommentOnReview);
 
 app.all("/*", (request, response) => {
   response.status(404).send({ msg: "not found" });
