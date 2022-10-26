@@ -3,6 +3,7 @@ const db = require("../db/connection");
 const app = require("../app.js");
 const request = require("supertest");
 const testData = require("../db/data/test-data");
+const { expect } = require("@jest/globals");
 
 beforeEach(() => seed(testData));
 
@@ -238,10 +239,102 @@ describe("Northcoders Backend Games Project", () => {
     test("404: responds with not found msg when query entered that doesn't exist", () => {
       return request(app)
         .get("/api/reviews?category=biscuits")
-        .expect(404)
+        .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("category not found");
         });
+    });
+  });
+
+  describe("GET: /api/reviews (multiple queries)", () => {
+    test("responds with array of reviews", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then(({ body }) => {
+          const reviews = body.reviews;
+          expect(reviews).toHaveLength(13);
+          expect(reviews).toBeInstanceOf(Array);
+          reviews.forEach((review) => {
+            expect(review).toEqual(
+              expect.objectContaining({
+                owner: expect.any(String),
+                title: expect.any(String),
+                review_id: expect.any(Number),
+                category: expect.any(String),
+                review_img_url: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                designer: expect.any(String),
+                review_body: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("responds with given query order", () => {
+      return request(app)
+        .get("/api/reviews?order=desc")
+        .expect(200)
+        .then(({ body: { reviews } }) => {
+          expect(reviews).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+
+
+    test("responds with multiple queries", () => {
+      return request(app)
+        .get("/api/reviews?category=dexterity&sort_by=title&order=asc")
+        .expect(200)
+        .then(({ body: { reviews } }) => {
+          expect(reviews).toBeSortedBy("title", { ascending: true });
+          reviews.forEach((review) => {
+            expect(review.category).toBe("dexterity");
+          });
+        });
+    });
+
+    test("responds with multiple queries", () => {
+      return request(app)
+        .get("/api/reviews?category=euro%20game&sort_by=votes&order=desc")
+        .expect(200)
+        .then(({ body: { reviews } }) => {
+          expect(reviews).toBeSortedBy("votes", { descending: true });
+          reviews.forEach((review) => {
+            expect(review.category).toBe("euro game");
+          });
+        });
+    });
+
+    test("responds with multiple queries", () => {
+      return request(app)
+        .get("/api/reviews?category=social%20deduction&sort_by=created_at&order=desc")
+        .expect(200)
+        .then(({ body: { reviews } }) => {
+          expect(reviews).toBeSortedBy("created_at", { descending: true });
+          reviews.forEach((review) => {
+            expect(review.category).toBe("social deduction");
+          });
+        });
+    });
+
+    test("400: responds with error message when given invalid category", () => {
+      return request(app)
+      .get("/api/reviews?category=lollipop&sort_by=votes")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("category not found");
+      });
+    });
+
+    test("400: responds with error message when given invalid sort_by query", () => {
+      return request(app)
+      .get("/api/reviews?category=dexterity&sort_by=most_popular&order=desc")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("your sort by or order by query doesn't exist");
+      });
     });
   });
 
