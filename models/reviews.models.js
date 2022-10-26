@@ -40,7 +40,7 @@ function fetchNewVotes(review_id, inc_votes) {
   }
 }
 
-function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
+function fetchReviews(sort_by = "created_at", order = "desc", category) {
   const validSortByQueries = [
     "review_id",
     "title",
@@ -58,8 +58,8 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
   const validCategories = [
     "euro game",
     "social deduction",
-    "dexterity",
     "children's games",
+    "dexterity",
     "strategy",
     "hidden-roles",
     "push-your-luck",
@@ -79,22 +79,22 @@ function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
     if (validCategories.includes(category)) {
       queryStr += `WHERE category = '${category}' `;
     } else {
-      return Promise.reject({ status: 404, msg: "category not found" });
+      return Promise.reject({ status: 400, msg: "category not found" });
     }
   }
   if (
     validSortByQueries.includes(sort_by) &&
-    validOrderQueries.includes(order_by)
+    validOrderQueries.includes(order)
   ) {
     queryStr += `GROUP BY reviews.review_id  
-                 ORDER BY ${sort_by} ${order_by};`;
+                 ORDER BY ${sort_by} ${order};`;
   } else {
-    return Promise.reject({ status: 404, msg: "not found" });
+    return Promise.reject({ status: 400, msg: "your sort by or order by query doesn't exist" });
   }
 
   return db.query(queryStr).then(({ rows }) => {
     if (rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "not found" });
+      return Promise.reject({ status: 400, msg: "no reviews found" });
     }
     return rows;
   });
