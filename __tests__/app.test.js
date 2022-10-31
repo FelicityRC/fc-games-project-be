@@ -247,7 +247,7 @@ describe("Northcoders Backend Games Project", () => {
   });
 
   describe("GET: /api/reviews (multiple queries)", () => {
-    test("responds with array of reviews", () => {
+    test("200: responds with array of reviews", () => {
       return request(app)
         .get("/api/reviews")
         .expect(200)
@@ -273,7 +273,7 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("responds with given query order", () => {
+    test("200: responds with given query order", () => {
       return request(app)
         .get("/api/reviews?order=desc")
         .expect(200)
@@ -283,7 +283,7 @@ describe("Northcoders Backend Games Project", () => {
     });
 
 
-    test("responds with multiple queries", () => {
+    test("200: responds with multiple queries", () => {
       return request(app)
         .get("/api/reviews?category=dexterity&sort_by=title&order=asc")
         .expect(200)
@@ -295,7 +295,7 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("responds with multiple queries", () => {
+    test("200: responds with multiple queries", () => {
       return request(app)
         .get("/api/reviews?category=euro%20game&sort_by=votes&order=desc")
         .expect(200)
@@ -307,7 +307,7 @@ describe("Northcoders Backend Games Project", () => {
         });
     });
 
-    test("responds with multiple queries", () => {
+    test("200: responds with multiple queries", () => {
       return request(app)
         .get("/api/reviews?category=social%20deduction&sort_by=created_at&order=desc")
         .expect(200)
