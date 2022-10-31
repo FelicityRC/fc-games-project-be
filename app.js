@@ -14,10 +14,10 @@ const {
   postCommentOnReview,
 } = require("./controllers/comments.controllers");
 
-app.use(cors());
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/categories", getCategories);
