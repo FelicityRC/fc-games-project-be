@@ -14,7 +14,6 @@ const {
   postCommentOnReview,
 } = require("./controllers/comments.controllers");
 
-
 const app = express();
 
 app.use(cors());
