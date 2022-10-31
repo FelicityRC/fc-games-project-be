@@ -1,5 +1,7 @@
 const express = require("express");
 
+const cors = require('cors');
+
 const { getCategories } = require("./controllers/categories.controllers");
 const {
   getReviews,
@@ -11,6 +13,8 @@ const {
   getCommentsByReviewId,
   postCommentOnReview,
 } = require("./controllers/comments.controllers");
+
+app.use(cors());
 
 const app = express();
 
