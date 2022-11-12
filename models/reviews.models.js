@@ -40,7 +40,7 @@ function fetchNewVotes(review_id, inc_votes) {
   }
 }
 
-function fetchReviews(sort_by = "created_at", order = "desc", category) {
+function fetchReviews(sort_by = "created_at", order_by = "desc", category) {
   const validSortByQueries = [
     "review_id",
     "title",
@@ -84,10 +84,10 @@ function fetchReviews(sort_by = "created_at", order = "desc", category) {
   }
   if (
     validSortByQueries.includes(sort_by) &&
-    validOrderQueries.includes(order)
+    validOrderQueries.includes(order_by)
   ) {
     queryStr += `GROUP BY reviews.review_id  
-                 ORDER BY ${sort_by} ${order};`;
+                 ORDER BY ${sort_by} ${order_by};`;
   } else {
     return Promise.reject({ status: 400, msg: "your sort by or order by query doesn't exist" });
   }
