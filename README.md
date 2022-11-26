@@ -1,8 +1,16 @@
-# Northcoders Games Reviews Site
+# Northcoders Games Reviews Project
 
-To view the fully hosted site vist
+## Description
 
-https://reviewsable.netlify.app/
+This is the backend for my site using Express, Node.js, MVC Architecture and RESTful API Design.
+
+Live Build:
+
+* https://reviewsable.netlify.app/
+
+Frontend Repo:
+
+* https://github.com/FelicityRC/fc-games-project
 
 ## Installation
 
