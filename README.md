@@ -4,16 +4,9 @@ To view the fully hosted site vist
 
 https://reviewsable.netlify.app/
 
-## Backend Repo
-
-https://github.com/FelicityRC/fc-games-project-be
-
-
 ## Installation
-
-git clone 
-
-https://github.com/FelicityRC/fc-games-project-be
+*
+git clone https://github.com/FelicityRC/fc-games-project-be
 
 npm install
 
@@ -22,8 +15,10 @@ npm run setup-dbs
 set up .env files (see details below)
 
 npm run seed
+*
+Run tests: 
 
-Run tests: npm test
+*npm test
 
 Start server: npm start.env files information
 
