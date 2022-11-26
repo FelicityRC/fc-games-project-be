@@ -6,7 +6,7 @@ https://reviewsable.netlify.app/
 
 ## Installation
 
-* git clone https://github.com/FelicityRC/fc-games-project-be
+* git clone: https://github.com/FelicityRC/fc-games-project-be
 
 * npm install
 
@@ -20,7 +20,7 @@ Run tests:
 
 * npm test
 
-Start server
+Start server:
 
 * npm start.env files information
 
