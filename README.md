@@ -1,18 +1,26 @@
 # Northcoders Games Reviews Site
 
-To view the fully hosted site: https://reviewsable.netlify.app/
+To view the fully hosted site vist:
 
-## Backend Repo: 
+https://reviewsable.netlify.app/
+
+## Backend Repo
 
 https://github.com/FelicityRC/fc-games-project-be
 
-## Installation:
 
-git clone: https://github.com/FelicityRC/fc-games-project-be
+## Installation
 
-npm install 
+git clone: 
+
+https://github.com/FelicityRC/fc-games-project-be
+
+npm install
+
 npm run setup-dbs
-set up .env files (details below)
+
+set up .env files (see details below)
+
 npm run seed
 
 Run tests:
@@ -28,6 +36,7 @@ npm start.env files information
 
 Node v18.9
 PostgreSQL v14.5
+
 
 ## You will need to create two .env files for your project: 
 
