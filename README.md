@@ -1,6 +1,6 @@
 # Northcoders Games Reviews Site
 
-To view the fully hosted site vist:
+To view the fully hosted site vist
 
 https://reviewsable.netlify.app/
 
@@ -11,7 +11,7 @@ https://github.com/FelicityRC/fc-games-project-be
 
 ## Installation
 
-git clone: 
+git clone 
 
 https://github.com/FelicityRC/fc-games-project-be
 
@@ -23,13 +23,9 @@ set up .env files (see details below)
 
 npm run seed
 
-Run tests:
+Run tests: npm test
 
-npm test
-
-Start server:
-
-npm start.env files information
+Start server: npm start.env files information
 
 
 ## Minimum Requirements
@@ -38,7 +34,7 @@ Node v18.9
 PostgreSQL v14.5
 
 
-## You will need to create two .env files for your project: 
+## You will need to create two .env files
 
 .env.test and .env.development. 
 Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names). Double check that these .env files are .gitignored.
