@@ -1,32 +1,12 @@
 const express = require("express");
-const cors = require('cors');
-
-const { getCategories } = require("./controllers/categories.controllers");
-const {
-  getReviews,
-  getReviewById,
-  updateVotes,
-} = require("./controllers/reviews.controllers");
-const { getUsers } = require("./controllers/users.controllers");
-const {
-  getCommentsByReviewId,
-  postCommentOnReview,
-} = require("./controllers/comments.controllers");
-const { getEndpoints } = require("./controllers/api.controllers");
+const cors = require("cors");
+const apiRouter = require("./routes/api-router");
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
-app.use("/api", getEndpoints);
 
-app.get("/api/categories", getCategories);
-app.get("/api/reviews/:review_id", getReviewById);
-app.get("/api/users", getUsers);
-app.get("/api/reviews", getReviews);
-app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
-app.patch("/api/reviews/:review_id", updateVotes);
-app.post("/api/reviews/:review_id/comments", postCommentOnReview);
+app.use("/api", apiRouter);
 
 app.all("/*", (request, response) => {
   response.status(404).send({ msg: "not found" });

@@ -1,8 +1,8 @@
-const { fetchEndpoints } = require("../models/api.models");
+const { fetchApi } = require("../models/api.models");
 
-function getEndpoints(req, res, next) {
+function getApi(req, res, next) {
   req.query;
-  fetchEndpoints()
+  fetchApi()
     .then((api) => {
       res.status(200).send({ api });
     })
@@ -11,4 +11,4 @@ function getEndpoints(req, res, next) {
     });
 }
 
-module.exports = { getEndpoints };
+module.exports = { getApi };
