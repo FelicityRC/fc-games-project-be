@@ -1,5 +1,5 @@
 node_modules
 .env.*
-
+.pgpass
 .test.sql
 .test.txt
